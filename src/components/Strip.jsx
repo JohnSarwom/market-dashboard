@@ -3,14 +3,12 @@ import { stocks } from '../data';
 import { pct, cls } from '../utils';
 
 export default function Strip({ curSlide, onSelect }) {
-    const items = [...stocks, ...stocks]; // duplicate for seamless loop
-
     return (
         <div className="fixed top-[52px] left-0 right-0 h-[44px] bg-surface border-b border-border z-[200] overflow-hidden">
             <div className="absolute left-0 top-0 bottom-0 w-9 bg-gradient-to-r from-surface to-transparent z-[2] pointer-events-none"></div>
 
-            <div className="flex items-stretch h-full animate-tickerScrollRight" style={{ width: 'max-content' }}>
-                {items.map((s, i) => {
+            <div className="flex items-stretch h-full w-max animate-tickerStrip">
+                {[...stocks, ...stocks].map((s, i) => {
                     const p = pct(s);
                     const c = cls(s);
                     const realIdx = i % stocks.length;
@@ -31,7 +29,6 @@ export default function Strip({ curSlide, onSelect }) {
                             `}>
                                 {p >= 0 ? '+' : ''}{p.toFixed(2)}%
                             </span>
-
                             <div className={`absolute bottom-0 left-0 right-0 h-[2px] bg-accent transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0'}`}></div>
                         </div>
                     );

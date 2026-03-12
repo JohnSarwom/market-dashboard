@@ -122,11 +122,6 @@
   to   { transform: translateX(-50%); }
 }
 
-@keyframes tickerScrollRight {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0%); }
-}
-
 .animate-tickerScroll {
   animation: tickerScroll 60s linear infinite;
 }
@@ -135,8 +130,8 @@
   animation: tickerScroll 140s linear infinite;
 }
 
-.animate-tickerScrollRight {
-  animation: tickerScrollRight 90s linear infinite;
+.animate-tickerStrip {
+  animation: tickerScroll 80s linear infinite;
 }
 
 @keyframes blink {
