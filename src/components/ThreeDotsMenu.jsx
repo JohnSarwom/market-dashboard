@@ -128,6 +128,13 @@ function doExportPDF() {
 
 // ── Icons (simple inline SVG) ─────────────────────────────────────────────
 
+const IconRefresh = () => (
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M1.5 5.5A4 4 0 1 1 3 8.9" />
+        <polyline points="1.5,9.5 1.5,7 4,7" />
+    </svg>
+);
+
 const IconFullscreen = () => (
     <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
         <path d="M1 4V1h3M7 1h3v3M10 7v3H7M4 10H1V7" />
@@ -385,6 +392,11 @@ export default function ThreeDotsMenu({ darkMode, onToggleDarkMode, onOpenAdmin 
     };
 
     const items = [
+        {
+            icon: <IconRefresh />,
+            label: 'Refresh',
+            onClick: () => { window.location.reload(); },
+        },
         {
             icon: isFullscreen ? <IconExitFullscreen /> : <IconFullscreen />,
             label: isFullscreen ? 'Exit Fullscreen' : 'Fullscreen',
