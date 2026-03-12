@@ -26,7 +26,7 @@ export default function RightPanel({ }) {
     return (
         <div className="bg-surface border-l border-border grid grid-rows-[auto_auto_auto] overflow-hidden h-full">
             <div className="p-3 border-b border-border overflow-hidden">
-                <div className="text-[9px] font-mono text-accent tracking-[2px] uppercase mb-2 flex items-center gap-1.5">SCPNG Market Index</div>
+                <div className="text-[9px] font-mono text-accent font-bold tracking-[2px] uppercase mb-2 flex items-center gap-1.5">SCPNG Market Index</div>
                 <div className="bg-card border border-border rounded-[5px] overflow-hidden grid grid-cols-2">
                     <div className="p-2 border-r border-border">
                         <div className="font-mono text-[8px] text-muted tracking-[1px] uppercase mb-1 whitespace-nowrap">KPEX Composite</div>
@@ -44,7 +44,7 @@ export default function RightPanel({ }) {
             <div className="p-3 border-b border-border overflow-hidden">
                 <div className="text-[9px] font-mono tracking-[2px] uppercase mb-2 flex items-center gap-1.5">
                     <span className="text-accent text-[11px] font-bold">{movers.length}</span>
-                    <span className="text-accent ml-1">Top Movers</span>
+                    <span className="text-accent font-bold ml-1">Top Movers</span>
                 </div>
 
                 <div className="h-[126px] overflow-hidden relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-6 after:bg-gradient-to-t after:from-surface after:to-transparent after:pointer-events-none">
@@ -73,7 +73,7 @@ export default function RightPanel({ }) {
             </div>
 
             <div className="p-3 overflow-hidden">
-                <div className="text-[9px] font-mono text-accent tracking-[2px] uppercase mb-2 flex items-center gap-1.5">Volume Leaders</div>
+                <div className="text-[9px] font-mono text-accent font-bold tracking-[2px] uppercase mb-2 flex items-center gap-1.5">Volume Leaders</div>
                 <div>
                     {volLeaders.map(s => {
                         const w = (s.v / maxVol * 100).toFixed(0);
