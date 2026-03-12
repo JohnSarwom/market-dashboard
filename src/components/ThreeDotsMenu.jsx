@@ -346,7 +346,9 @@ export default function ThreeDotsMenu({ darkMode, onToggleDarkMode, onOpenAdmin 
     const [showAdmin, setShowAdmin] = useState(false);
     const [showExport, setShowExport] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
+    const [dropPos, setDropPos] = useState({ top: 55, right: 16 });
     const menuRef = useRef(null);
+    const buttonRef = useRef(null);
 
     // Track fullscreen changes
     useEffect(() => {
@@ -364,6 +366,14 @@ export default function ThreeDotsMenu({ darkMode, onToggleDarkMode, onOpenAdmin 
         document.addEventListener('mousedown', handler);
         return () => document.removeEventListener('mousedown', handler);
     }, [open]);
+
+    const handleToggle = () => {
+        if (!open && buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setDropPos({ top: rect.bottom + 5, right: window.innerWidth - rect.right });
+        }
+        setOpen(o => !o);
+    };
 
     const toggleFullscreen = () => {
         if (!document.fullscreenElement) {
@@ -402,7 +412,8 @@ export default function ThreeDotsMenu({ darkMode, onToggleDarkMode, onOpenAdmin 
             <div className="relative" ref={menuRef}>
                 {/* Three-dot button */}
                 <button
-                    onClick={() => setOpen(o => !o)}
+                    ref={buttonRef}
+                    onClick={handleToggle}
                     title="Menu"
                     className={`flex flex-col gap-[3.5px] items-center justify-center w-[30px] h-[30px] border rounded-sm transition-all duration-150 ${open
                         ? 'border-accent text-accent bg-card'
@@ -416,7 +427,7 @@ export default function ThreeDotsMenu({ darkMode, onToggleDarkMode, onOpenAdmin 
 
                 {/* Dropdown */}
                 {open && (
-                    <div className="absolute right-0 top-[calc(100%+5px)] bg-surface border border-border rounded-sm min-w-[168px] z-[400] shadow-2xl overflow-hidden">
+                    <div style={{ position: 'fixed', top: dropPos.top, right: dropPos.right }} className="bg-surface border border-border rounded-sm min-w-[168px] z-[9999] shadow-2xl overflow-hidden">
                         {items.map((item, i) => (
                             <button
                                 key={i}
