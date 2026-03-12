@@ -60,9 +60,10 @@ export default function StockChart({ stock, prices, labels, isUp, brandColor, br
         const mainIndices = pick3Indices();
 
         const dataPos = (idx) => {
-            const chart = chartInstance.current;
-            const dotX = chart.scales.x.getPixelForIndex(idx);
-            const dotY = chart.scales.y.getPixelForValue(prices[idx]);
+            const xFrac = prices.length > 1 ? idx / (prices.length - 1) : 0.5;
+            const dotX = ca.left + xFrac * (ca.right - ca.left);
+            const yFrac = 1 - (prices[idx] - minP) / priceRange;
+            const dotY = ca.top + yFrac * (ca.bottom - ca.top);
             return { dotX, dotY };
         };
 

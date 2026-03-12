@@ -199,15 +199,18 @@
   top: 0;
 }
 
-.pin-dot, .ghost-dot {
+.pin-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 2px currentColor, 0 0 8px currentColor;
 }
 
 .ghost-dot {
   width: 6px;
   height: 6px;
+  border-radius: 50%;
 }
 
 .pin-line {
