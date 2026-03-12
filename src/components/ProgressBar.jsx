@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export default function ProgressBar({ duration, active, resetKey }) {
+export default function ProgressBar({ duration, active, resetKey, navVisible }) {
     const fillRef = useRef(null);
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export default function ProgressBar({ duration, active, resetKey }) {
     }, [active, duration, resetKey]);
 
     return (
-        <div className="fixed top-[50px] left-0 right-0 h-[2px] bg-border z-[299]">
+        <div className="fixed left-0 right-0 h-[2px] bg-border z-[299]" style={{ top: navVisible ? '50px' : '0px', transition: 'top 0.35s ease' }}>
             <div ref={fillRef} className="h-full bg-accent w-0"></div>
         </div>
     );

@@ -28,8 +28,28 @@ function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [companyData, setCompanyData] = useState(loadCompanyData);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [navVisible, setNavVisible] = useState(true);
 
   const timerRef = useRef(null);
+  const hideNavTimer = useRef(null);
+
+  // Auto-hide nav 3s after intro completes
+  useEffect(() => {
+    if (showIntro) return;
+    clearTimeout(hideNavTimer.current);
+    hideNavTimer.current = setTimeout(() => setNavVisible(false), 3000);
+    return () => clearTimeout(hideNavTimer.current);
+  }, [showIntro]);
+
+  const showNav = () => {
+    clearTimeout(hideNavTimer.current);
+    setNavVisible(true);
+  };
+
+  const scheduleHideNav = () => {
+    clearTimeout(hideNavTimer.current);
+    hideNavTimer.current = setTimeout(() => setNavVisible(false), 600);
+  };
 
   // Apply dark/light theme
   useEffect(() => {
@@ -96,6 +116,13 @@ function App() {
 
       {!showIntro && (
         <>
+          {/* Hover zone — always at top, triggers nav reveal */}
+          <div
+            className="fixed top-0 left-0 right-0 z-[302]"
+            style={{ height: navVisible ? '50px' : '12px' }}
+            onMouseEnter={showNav}
+          />
+
           <NavigationBar
             curSlide={curSlide}
             paused={paused}
@@ -104,12 +131,16 @@ function App() {
             darkMode={darkMode}
             onToggleDarkMode={() => setDarkMode(d => !d)}
             onOpenAdmin={() => { setPaused(true); setShowAdminPanel(true); }}
+            navVisible={navVisible}
+            onMouseEnter={showNav}
+            onMouseLeave={scheduleHideNav}
           />
 
           <ProgressBar
             duration={currentDuration}
             active={!paused}
             resetKey={resetKey}
+            navVisible={navVisible}
           />
 
           <Strip

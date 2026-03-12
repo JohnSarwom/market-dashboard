@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TOTAL_SLIDES, stocks } from '../data';
 import ThreeDotsMenu from './ThreeDotsMenu';
 
-export default function NavigationBar({ curSlide, paused, onTogglePause, onDotClick, darkMode, onToggleDarkMode, onOpenAdmin }) {
+export default function NavigationBar({ curSlide, paused, onTogglePause, onDotClick, darkMode, onToggleDarkMode, onOpenAdmin, navVisible, onMouseEnter, onMouseLeave }) {
     const [time, setTime] = useState('');
 
     useEffect(() => {
@@ -22,7 +22,12 @@ export default function NavigationBar({ curSlide, paused, onTogglePause, onDotCl
         : `${stocks[curSlide]?.t} · ${curSlide + 1} / ${TOTAL_SLIDES}`;
 
     return (
-        <div className="fixed top-0 left-0 right-0 h-[50px] bg-surface border-b border-border flex items-center justify-between px-5 z-[300]">
+        <div
+            className="fixed top-0 left-0 right-0 h-[50px] bg-surface border-b border-border flex items-center justify-between px-5 z-[300]"
+            style={{ transform: navVisible ? 'translateY(0)' : 'translateY(-100%)', transition: 'transform 0.35s ease' }}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             <div className="flex items-center gap-2.5">
                 <span className="text-[14px] font-extrabold tracking-[2px]">MARKET DASHBOARD</span>
                 <span className="text-[11px] font-mono text-muted">— Securities Commission of PNG</span>
