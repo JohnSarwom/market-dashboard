@@ -1,0 +1,326 @@
+@import "tailwindcss";
+
+@theme {
+  /* Dark (default) — TradingView-inspired navy */
+  --color-bg: #131722;
+  --color-surface: #1e222d;
+  --color-card: #2a2e39;
+  --color-border: #363a45;
+  --color-accent: #e8b800;
+  --color-red: #f23645;
+  --color-text: #d1d4dc;
+  --color-muted: #787b86;
+  --color-dim: #9598a1;
+  --font-sans: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+@layer base {
+  :root {
+    /* Dark mode — TradingView-inspired navy */
+    --bg: #131722;
+    --surface: #1e222d;
+    --card: #2a2e39;
+    --border: #363a45;
+    --accent: #e8b800;
+    --red: #f23645;
+    --text: #d1d4dc;
+    --muted: #787b86;
+    --dim: #9598a1;
+    --nav-h: 50px;
+    --strip-h: 44px;
+  }
+
+  [data-theme="light"] {
+    /* Light mode — clean white */
+    --bg: #ffffff;
+    --surface: #f8f9fd;
+    --card: #f0f3fa;
+    --border: #e0e3eb;
+    --accent: #b8920a;
+    --red: #f23645;
+    --text: #131722;
+    --muted: #787b86;
+    --dim: #4c525e;
+    /* Tailwind @theme vars */
+    --color-bg: #ffffff;
+    --color-surface: #f8f9fd;
+    --color-card: #f0f3fa;
+    --color-border: #e0e3eb;
+    --color-accent: #b8920a;
+    --color-red: #f23645;
+    --color-text: #131722;
+    --color-muted: #787b86;
+    --color-dim: #4c525e;
+  }
+
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .up {
+    color: var(--accent) !important;
+  }
+
+  .down {
+    color: var(--red) !important;
+  }
+
+  .flat {
+    color: var(--dim) !important;
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bg-grid-pattern {
+    background-image:
+      linear-gradient(rgba(232, 184, 0, .04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 184, 0, .04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@keyframes gridPan {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 48px 48px;
+  }
+}
+
+.animate-gridPan {
+  animation: gridPan 20s linear infinite;
+}
+
+@keyframes tickerScroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-tickerScroll {
+  animation: tickerScroll 60s linear infinite;
+}
+
+.animate-tickerScroll-slow {
+  animation: tickerScroll 140s linear infinite;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+.animate-blink-slow {
+  animation: blink 2s infinite;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp .5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn .5s ease forwards;
+}
+
+/* Animations that we restart with JS */
+.anim-sym,
+.anim-name,
+.anim-price,
+.anim-chg,
+.anim-meta,
+.anim-stats,
+.anim-chart {
+  animation: fadeIn .6s ease;
+}
+
+/* ── Chart pin cards ───────────────────────────────────────── */
+.pin, .ghost {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.pin-dot, .ghost-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.ghost-dot {
+  width: 6px;
+  height: 6px;
+}
+
+.pin-line {
+  width: 1px;
+}
+
+.pin-card {
+  background: var(--card);
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 7px 9px 8px;
+  width: 136px;
+  font-family: 'Space Mono', monospace;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+}
+
+.ghost-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 7px;
+  width: 90px;
+  font-family: 'Space Mono', monospace;
+}
+
+.pc-date {
+  font-size: 8.5px;
+  color: var(--muted);
+  margin-bottom: 2px;
+  letter-spacing: .3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pc-price {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.5px;
+  line-height: 1.15;
+  margin-bottom: 1px;
+}
+
+.pc-chg {
+  font-size: 9px;
+  opacity: .85;
+  margin-bottom: 5px;
+}
+
+.pc-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 3px 0 4px;
+}
+
+.pc-row {
+  display: flex;
+  align-items: center;
+  font-size: 9px;
+  margin-bottom: 2px;
+  gap: 2px;
+}
+
+.pc-lbl {
+  color: var(--muted);
+  font-size: 7.5px;
+  letter-spacing: .5px;
+}
+
+.pc-val {
+  color: var(--dim);
+  font-size: 9px;
+}
+
+.pc-52w {
+  margin-top: 3px;
+}
+
+.pc-52bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 2px 0;
+}
+
+.pc-52fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.pc-52ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 7.5px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.gc-date {
+  font-size: 8px;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.gc-price {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 1px;
+  letter-spacing: -.3px;
+}
+
+.gc-chg {
+  font-size: 8px;
+  opacity: .8;
+}
