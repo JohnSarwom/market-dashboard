@@ -91,7 +91,7 @@ function App() {
   };
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-bg text-text font-sans antialiased">
+    <div className="w-screen h-screen overflow-hidden bg-bg text-text font-sans antialiased rounded-2xl">
       {showIntro && <IntroOverlay onComplete={() => setShowIntro(false)} />}
 
       {!showIntro && (
