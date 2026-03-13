@@ -9,18 +9,19 @@ Live market data display dashboard for the KPort Moresby Exchange (KPEX).
 
 1. [Overview](#overview)
 2. [Getting Started](#getting-started)
-3. [Project Structure](#project-structure)
-4. [Tech Stack](#tech-stack)
-5. [Components Reference](#components-reference)
-6. [Data Model](#data-model)
-7. [Theme System](#theme-system)
-8. [Per-Company Brand Theming](#per-company-brand-theming)
-9. [Admin Panel](#admin-panel)
-10. [Three-Dot Menu Features](#three-dot-menu-features)
-11. [Export Feature](#export-feature)
-12. [Adding or Updating Company Logos](#adding-or-updating-company-logos)
-13. [Company Brand Colors Reference](#company-brand-colors-reference)
-14. [Persistence & localStorage](#persistence--localstorage)
+3. [WordPress Embedding](#wordpress-embedding)
+4. [Project Structure](#project-structure)
+5. [Tech Stack](#tech-stack)
+6. [Components Reference](#components-reference)
+7. [Data Model](#data-model)
+8. [Theme System](#theme-system)
+9. [Per-Company Brand Theming](#per-company-brand-theming)
+10. [Admin Panel](#admin-panel)
+11. [Three-Dot Menu Features](#three-dot-menu-features)
+12. [Export Feature](#export-feature)
+13. [Adding or Updating Company Logos](#adding-or-updating-company-logos)
+14. [Company Brand Colors Reference](#company-brand-colors-reference)
+15. [Persistence & localStorage](#persistence--localstorage)
 
 ---
 
@@ -59,11 +60,39 @@ The dev server runs at `http://localhost:5173` by default.
 
 ---
 
+## WordPress Embedding
+
+The dashboard is deployed to Vercel and can be embedded in any WordPress/Elementor page via a shortcode.
+
+### Vercel deployment URL
+```
+https://market-dashboard-scpng.vercel.app/
+```
+
+### WordPress shortcode (Code Snippets plugin)
+```php
+function market_dashboard_embed() {
+    return '<iframe src="https://market-dashboard-scpng.vercel.app/" width="100%" height="800px" style="border:none; border-radius:16px; overflow:hidden;" allowfullscreen></iframe>';
+}
+add_shortcode('market_dashboard', 'market_dashboard_embed');
+```
+
+Place `[market_dashboard]` wherever you want the dashboard to appear in Elementor.
+
+**Important notes:**
+- Always use the production URL above (not a branch preview URL like `...-git-main-...vercel.app`)
+- The PHP return string must be on a single line — no line breaks inside the string
+- `vercel.json` at the project root sets `X-Frame-Options: ALLOWALL` and `Content-Security-Policy: frame-ancestors *` to permit embedding
+
+---
+
 ## Project Structure
 
 ```
 market-dashboard/
 ├── docs.md                         ← This file
+├── CHANGELOG.md                    ← History of changes and decisions
+├── vercel.json                     ← Vercel deployment config (iframe embedding headers)
 ├── app/
 │   ├── index.html                  ← Entry HTML (loads Google Fonts)
 │   ├── package.json
@@ -121,6 +150,7 @@ The root component. Manages all global state:
 | `darkMode` | boolean | `true` = dark theme (default), `false` = light |
 | `companyData` | array | Merged stock data with localStorage customisations |
 | `showAdminPanel` | boolean | Whether AdminPanel is shown |
+| `navVisible` | boolean | Whether the nav bar is currently visible (auto-hides after 3s) |
 
 **Key behaviors:**
 - Applies `data-theme="dark"/"light"` to `<html>` when `darkMode` changes
@@ -136,19 +166,24 @@ Fixed top bar (50px height). Contains:
 - **Centre:** Current slide label, navigation dots (click to jump to any slide)
 - **Right:** PAUSE/RESUME button · SESSION OPEN indicator · live clock (GMT+10) · `ThreeDotsMenu`
 
-Props: `curSlide`, `paused`, `onTogglePause`, `onDotClick`, `darkMode`, `onToggleDarkMode`, `onOpenAdmin`
+Props: `curSlide`, `paused`, `onTogglePause`, `onDotClick`, `darkMode`, `onToggleDarkMode`, `onOpenAdmin`, `navVisible`, `onMouseEnter`, `onMouseLeave`
+
+**Auto-hide behaviour:** The nav slides up (`translateY(-100%)`) when `navVisible` is false and back down when true, using a `0.35s ease` CSS transition. The parent (`App.jsx`) drives this via a 3-second auto-hide timer that starts after the intro closes. Hovering the top of the screen cancels the timer and shows the nav; moving away schedules a 0.6s hide delay.
 
 ---
 
 ### `ThreeDotsMenu.jsx`
-The `⋮` button at the far right of the nav bar. Opens a dropdown with four actions:
+The `⋮` button at the far right of the nav bar. Opens a dropdown with five actions:
 
 | Menu item | What it does |
 |---|---|
+| **Refresh** | Calls `window.location.reload()` — reloads the entire dashboard. |
 | **Fullscreen** | Toggles browser fullscreen (`document.requestFullscreen`). Label/icon switches to "Exit Fullscreen" when active. |
 | **Light Mode / Dark Mode** | Switches global theme. Sun icon = currently dark (click for light). Moon = currently light (click for dark). |
 | **Admin Login** | Opens a login modal. On success, opens the Admin Panel. |
 | **Export Data** | Opens the export picker (Excel or PDF). |
+
+**iframe compatibility:** The dropdown uses `position: fixed` with coordinates from `getBoundingClientRect()` rather than `position: absolute`. This ensures it is never clipped by `overflow: hidden` ancestors, which is important when the dashboard is embedded in a WordPress iframe.
 
 ---
 
@@ -219,6 +254,10 @@ Fixed-width right column (248px). Shows:
 ### `Strip.jsx`
 Scrolling ticker strip below the nav bar. Shows all stock tickers with price and % change. Clicking a ticker pauses the dashboard and jumps to that stock.
 
+Props: `curSlide`, `onSelect`, `navVisible`
+
+`top` transitions between `52px` (nav visible) and `2px` (nav hidden) with `0.35s ease` so the strip slides up flush with the progress bar when the nav hides.
+
 ---
 
 ### `IntroOverlay.jsx`
@@ -227,7 +266,11 @@ Splash screen shown on first load. Fades out after `INTRO_DURATION` (5 seconds).
 ---
 
 ### `ProgressBar.jsx`
-Thin bar just below the nav bar showing time remaining for the current slide/timeframe. Resets on `resetKey` change.
+Thin 2px bar showing time remaining for the current slide/timeframe. Resets on `resetKey` change.
+
+Props: `duration`, `active`, `resetKey`, `navVisible`
+
+`top` transitions between `50px` (nav visible) and `0px` (nav hidden) with `0.35s ease`. When the nav is hidden, the green line is visible at the very top edge of the screen as a subtle activity indicator.
 
 ---
 
@@ -370,6 +413,7 @@ Click **← BACK TO DASHBOARD** to close the admin panel.
 
 | Feature | Details |
 |---|---|
+| **Refresh** | Reloads the page via `window.location.reload()`. Useful to reset the dashboard to its initial state. |
 | **Fullscreen** | Calls `document.documentElement.requestFullscreen()`. The button label and icon update to reflect current state. Useful for kiosk/display mode. |
 | **Light / Dark Mode** | Toggles `data-theme` attribute on `<html>`. Persists for the session (not saved to localStorage — resets to dark on reload). |
 | **Admin Login** | See [Admin Panel](#admin-panel) section. |
@@ -472,6 +516,29 @@ Default colors assigned in `data.js`. All editable via the Admin Panel.
 **To reset all customisations**, open browser DevTools → Application → Local Storage → delete `scpng_company_data`.
 
 **Dark/light mode preference** is not persisted — the dashboard always starts in dark mode.
+
+---
+
+---
+
+## Getting Started (Updated)
+
+> **Note:** The project was flattened from `app/` to the project root. All commands run from `market-dashboard/` directly.
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+# → http://localhost:5173 (or next available port)
+
+# Build for production
+npm run build
+
+# Deploy: push to GitHub main branch — Vercel auto-deploys
+git push origin master
+```
 
 ---
 
