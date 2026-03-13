@@ -145,13 +145,14 @@ function App() {
 
           <Strip
             curSlide={curSlide}
+            navVisible={navVisible}
             onSelect={idx => {
               setPaused(true);
               goToSlide(idx);
             }}
           />
 
-          <div className="fixed top-[96px] left-0 right-0 bottom-0 overflow-hidden">
+          <div className="fixed left-0 right-0 bottom-0 overflow-hidden" style={{ top: navVisible ? '96px' : '46px', transition: 'top 0.35s ease' }}>
             {companyData.map((stock, i) => (
               <StockSlide
                 key={stock.t}

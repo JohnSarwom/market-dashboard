@@ -2,9 +2,9 @@ import React from 'react';
 import { stocks } from '../data';
 import { pct, cls } from '../utils';
 
-export default function Strip({ curSlide, onSelect }) {
+export default function Strip({ curSlide, onSelect, navVisible }) {
     return (
-        <div className="fixed top-[52px] left-0 right-0 h-[44px] bg-surface border-b border-border z-[200] overflow-hidden">
+        <div className="fixed left-0 right-0 h-[44px] bg-surface border-b border-border z-[200] overflow-hidden" style={{ top: navVisible ? '52px' : '2px', transition: 'top 0.35s ease' }}>
             <div className="absolute left-0 top-0 bottom-0 w-9 bg-gradient-to-r from-surface to-transparent z-[2] pointer-events-none"></div>
 
             <div className="flex items-stretch h-full w-max animate-tickerStrip">
