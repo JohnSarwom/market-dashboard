@@ -25,7 +25,7 @@ function App() {
   const [curTFIdx, setCurTFIdx] = useState(0);
   const [paused, setPaused] = useState(false);
   const [resetKey, setResetKey] = useState(0);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [companyData, setCompanyData] = useState(loadCompanyData);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
