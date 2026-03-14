@@ -11,7 +11,7 @@
   --color-text: #d1d4dc;
   --color-muted: #787b86;
   --color-dim: #9598a1;
-  --font-sans: 'Syne', sans-serif;
+  --font-sans: 'Montserrat', sans-serif;
   --font-mono: 'Space Mono', monospace;
 }
 
@@ -67,9 +67,9 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background: var(--bg);
+    background: transparent;
     color: var(--text);
-    font-family: 'Syne', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 

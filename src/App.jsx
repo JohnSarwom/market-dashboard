@@ -111,7 +111,7 @@ function App() {
   };
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-bg text-text font-sans antialiased rounded-2xl">
+    <div className="w-screen h-screen overflow-hidden bg-bg text-text font-sans antialiased rounded-2xl" style={{ transform: 'translateZ(0)' }}>
       {showIntro && <IntroOverlay onComplete={() => setShowIntro(false)} />}
 
       {!showIntro && (
@@ -119,7 +119,7 @@ function App() {
           {/* Hover zone — always at top, triggers nav reveal */}
           <div
             className="fixed top-0 left-0 right-0 z-[302]"
-            style={{ height: navVisible ? '50px' : '12px' }}
+            style={{ height: navVisible ? '50px' : '12px', pointerEvents: navVisible ? 'none' : 'auto' }}
             onMouseEnter={showNav}
           />
 

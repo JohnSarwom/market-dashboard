@@ -59,10 +59,27 @@ export default function IntroOverlay({ onComplete }) {
 
     return (
         <div
-            className={`fixed inset-0 z-[9999] bg-bg flex items-center justify-center flex-col transition-all duration-800 ease-in-out ${faded ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
+            className={`fixed inset-0 z-[9999] flex items-center justify-center flex-col transition-all duration-800 ease-in-out ${faded ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
                 }`}
         >
-            <div className="fixed inset-0 bg-grid-pattern animate-gridPan z-0 text-white"></div>
+            {/* Base solid background */}
+            <div className="fixed inset-0 bg-bg z-[-2]"></div>
+
+            {/* Backdrop Image */}
+            <div 
+                className="fixed inset-0 z-[-1] opacity-50"
+                style={{
+                    backgroundImage: "url('/images/Market_Data_Dashboard_Backdrop (1).jpg')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                }}
+            ></div>
+            
+            {/* Dark Overlay for readability */}
+            <div className="fixed inset-0 bg-bg/60 backdrop-blur-[2px] z-[-1]"></div>
+
+            <div className="fixed inset-0 bg-grid-pattern animate-gridPan z-0 opacity-40"></div>
 
             {/* Corner Brackets */}
             <div className="fixed w-10 h-10 border-t-2 border-l-2 border-accent top-6 left-6 animate-fadeIn opacity-0 [animation-delay:0.8s]"></div>

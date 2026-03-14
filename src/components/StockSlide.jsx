@@ -37,6 +37,9 @@ export default function StockSlide({ stock, isActive, curTFIdx, onSetTF }) {
         >
             {/* Left side */}
             <div className="flex flex-col pt-3.5 px-[18px] pb-2.5 gap-2 overflow-hidden">
+                {/* Announcement — full width */}
+                {AnouncementsTicker}
+
                 {/* Hero Top */}
                 <div className="flex-shrink-0 flex items-stretch gap-6 h-[104px]">
                     {/* Company logo — drop files at app/public/logos/{ticker}.png */}
@@ -51,7 +54,7 @@ export default function StockSlide({ stock, isActive, curTFIdx, onSetTF }) {
                         <div className={`absolute left-0 top-0 bottom-0 w-[3px] ${cls(stock) === 'up' ? 'bg-accent' : cls(stock) === 'down' ? 'bg-red' : 'bg-border'}`} />
                     </div>
 
-                    {/* Left sub-col: Name + Price + Meta */}
+                    {/* Name + Price + Meta */}
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                         <span className="text-[clamp(16px,1.8vw,24px)] font-extrabold tracking-[-0.5px] anim-name">{stock.n}</span>
                         <div className="flex items-baseline gap-2.5 anim-price">
@@ -70,9 +73,8 @@ export default function StockSlide({ stock, isActive, curTFIdx, onSetTF }) {
                         </div>
                     </div>
 
-                    {/* Right sub-col: Announcements + TF buttons + Date range */}
+                    {/* TF buttons + Date range */}
                     <div className="w-[260px] flex-shrink-0 flex flex-col justify-between">
-                        {AnouncementsTicker}
                         <div className="flex gap-[3px]">
                             {TF_SEQUENCE.map((tf, i) => (
                                 <button
